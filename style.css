@@ -1,0 +1,28 @@
+.jumbotron {
+    background-color: rgb(57, 49, 67, .1);
+    color: goldenrod;
+}
+
+body {
+    background-image: url('https://images.saymedia-content.com/.image/t_share/MTc2Mjk3NDYxNTA4Njc4ODI5/-primordial-deities-in-greek-mythology.jpg');
+    background-position: top;
+    background-repeat: no-repeat;
+    height: 100vh;
+    background-size: cover;
+    background-color: rgba(0, 0, 0, .5);
+    background-blend-mode: multiply;
+}
+
+#app {
+    color: rgb(55, 6, 55);
+}
+
+.card-header {
+    background-color: rgb(246, 245, 249);
+    color: goldenrod;
+}
+
+.card-body {
+    background-color: rgb(240, 238, 244);
+    color: rgb(63, 60, 4);
+}
