@@ -150,20 +150,20 @@ class DOMManager {
                 <div class="card-body1" id="main-card">
                     <div class="card">
                         <div class="row">
-                            <div class="col-sm">
-                                <input type="text" id="${pantheon.id}-god-name" class="form-control" placeholder="God Name">
+                            <div class="col-6">
+                                God Name: <input type="text" id="${pantheon.id}-god-name" class="form-control">
                             </div>
-                            <div class="col-sm">
-                            <input type="text" id="${pantheon.id}-spouse" class="form-control" placeholder="Spouse">
+                            <div class="col-6">
+                                Spouse: <input type="text" id="${pantheon.id}-spouse" class="form-control">
                             </div>
-                            <div class="col-sm">
-                                <input type="text" id="${pantheon.id}-god-type" class="form-control" placeholder="God Type">
+                            <div class="col-6">
+                                God Type: <input type="text" id="${pantheon.id}-god-type" class="form-control">
                             </div>
-                            <div class="col-sm">
-                                <input type="text" id="${pantheon.id}-god-of" class="form-control" placeholder="God Of">
+                            <div class="col-6">
+                               God Of: <input type="text" id="${pantheon.id}-god-of" class="form-control">
                             </div>
                         </div>
-                        <button id="${pantheon.id}-new-god" onclick="DOMManager.addGods('${pantheon.id}')" class="btn btn-warning form-control">Add</button>
+                        <button id="${pantheon.id}-new-god" onclick="DOMManager.addGods('${pantheon.id}')" class="btn btn-warning mt-1 form-control">Add</button>
                     </div>
                 </div>
             </div><br>`
