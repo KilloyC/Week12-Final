@@ -1,9 +1,7 @@
-//find an API and use ajax to interact with it
-//create a form
+/* TODO */
 //create a way for users to
-    //be able to add entires
-    //update entries
-    //delete entries
+    //edit entries with a modal after clicking the edit button-not sure how to make this work.
+//get the cards to display in a row and columns.
 
 class Pantheon {
     constructor(name) {
@@ -12,16 +10,20 @@ class Pantheon {
         //console.log(this.gods);
     }
       
-    addGods(name, status, godOf) {
-        this.gods.push(new Gods(name, status, godOf));
+    addGods(name, spouse, type, godOf) {
+        this.gods.push(new Gods(name, spouse, type, godOf));
     }
 } 
       
 class Gods {
-    constructor(name, status, godOf) {
+    static idCounter = 0;
+
+    constructor(name, spouse, type, godOf) {
         this.name = name;
-        this.status = status;
+        this.type = type;
         this.godOf = godOf;
+        this.spouse = spouse;
+        this.id = Gods.idCounter++;
     }
 }
       
@@ -34,7 +36,7 @@ class PantheonStorage {
     }
       
     static getPantheon(id) {
-        return $.get(this.url + `/${id}`);
+        return $.get(`${this.url}/${id}`);
     }
       
     static createPantheon(pantheon) {
@@ -43,7 +45,7 @@ class PantheonStorage {
       
     static updatePantheon(pantheon) {
         return $.ajax({
-            url: this.url + `/${pantheon.id}`,
+            url: `${this.url}/${pantheon.id}`,
             dataType: "json",
             data: JSON.stringify(pantheon),
             contentType: "application/json",
@@ -53,7 +55,7 @@ class PantheonStorage {
       
     static deletePantheon(id) {
         return $.ajax({
-            url: this.url + `/${id}`,
+            url: `${this.url}/${id}`,
             type: "DELETE"
         });
     }
@@ -81,14 +83,33 @@ class DOMManager {
         })
         .then((pantheons) => this.render(pantheons));
     }
+
+    //need to find a way to get the api data to fill out the form, and to be able to edit it and save the chagnes.
+    static editGods() {
+        // $('#editBtn').on('click', () => {
+        //     $('#myModal').modal('show');
+
+        //     $.ajax({
+        //         url: `${this.url}/${god.id}`,
+        //         dataType: "json",
+        //         data: JSON.stringify(god),
+        //         contentType: "application/json",
+        //         type: "PUT"
+        //     })
+        // })
+    }
       
     static addGods(id) {
         for (let pantheon of this.pantheons) {
-            console.log(this.pantheons);
+            //console.log(pantheon);
+            //console.log(this.pantheons);
         if (pantheon.id == id) {
-            console.log(pantheon.id);
-            pantheon.gods.push(new Gods($(`#${pantheon.id}-god-name`).val(), $(`#${pantheon.id}-god-status`).val(), $(`#${pantheon.id}-god-of`).val()));
-            console.log(pantheon.gods);
+            //console.log(pantheon.id);
+            pantheon.gods.push(new Gods($(`#${pantheon.id}-god-name`).val(),
+            $(`#${pantheon.id}-spouse`).val(), 
+            $(`#${pantheon.id}-god-type`).val(), 
+            $(`#${pantheon.id}-god-of`).val()));
+            //console.log(pantheon.gods);
             PantheonStorage.updatePantheon(pantheon)
             .then(() => {
                 return PantheonStorage.getAllPantheon();
@@ -103,6 +124,7 @@ class DOMManager {
             if (pantheon.id == pantheonId) {
                 for (let god of pantheon.gods) {
                     if (god.id == godsId) {
+                        //console.log(god.id);
                         pantheon.gods.splice(pantheon.gods.indexOf(god), 1);
                         PantheonStorage.updatePantheon(pantheon)
                         .then(() => {
@@ -123,46 +145,63 @@ class DOMManager {
             `<div id="${pantheon.id}" class="card">
                 <div class="card-header">
                     <h2 class="text-center">${pantheon.name}</h2>
-                <button class="btn btn-danger d-flex justify-content-center align-items-center m-auto" onclick="DOMManager.deletePantheon('${pantheon.id}')">Delete</button>
+                <button class="btn btn-outline-danger d-flex justify-content-center align-items-center m-auto" onclick="DOMManager.deletePantheon('${pantheon.id}')">Delete</button>
                 </div>
-                <div class="card-body">
+                <div class="card-body1" id="main-card">
                     <div class="card">
                         <div class="row">
                             <div class="col-sm">
                                 <input type="text" id="${pantheon.id}-god-name" class="form-control" placeholder="God Name">
                             </div>
                             <div class="col-sm">
-                                <input type="text" id="${pantheon.id}-god-status" class="form-control" placeholder="God Status">
+                            <input type="text" id="${pantheon.id}-spouse" class="form-control" placeholder="Spouse">
+                            </div>
+                            <div class="col-sm">
+                                <input type="text" id="${pantheon.id}-god-type" class="form-control" placeholder="God Type">
                             </div>
                             <div class="col-sm">
                                 <input type="text" id="${pantheon.id}-god-of" class="form-control" placeholder="God Of">
                             </div>
                         </div>
-                        <button id="${pantheon.id}-new-volunteer" onclick="DOMManager.addGods('${pantheon.id}')" class="btn btn-primary form-control">Add</button>
+                        <button id="${pantheon.id}-new-god" onclick="DOMManager.addGods('${pantheon.id}')" class="btn btn-warning form-control">Add</button>
                     </div>
                 </div>
             </div><br>`
             );
       
             for (let god of pantheon.gods) {
-                $(`#${pantheon.id}`).find(".card-body").append(
-                  `<p>
-                  <span id="god-name-${god.id}">God Name: ${god.name}</span>
-                  <span id="god-status-${god.id}">God Status: ${god.status}</span>
-                  <span id="god-of-${god.id}">God Of: ${god.godOf}</span>
-                  <button class="btn btn-danger" onclick="DOMManager.deleteGods('${pantheon.id}', '${god.id}')">Delete</button></p>
-                  `
+                $(`#${pantheon.id}`).find('.card-body1').append(
+                    `<div class="card mx-2 mt-2 mb-2" id="innerCard">
+                        <div class="card-body">
+                            <h5 class="card-title">${god.name}</h5>
+                                <p class="card-text">
+                                <span id="god-spouse-${god.id}"><strong>Spouse:</strong> ${god.spouse}</span><br>
+                                <span id="god-type-${god.id}"><strong>God Type:</strong> ${god.type}</span><br>
+                                <span id="god-of-${god.id}"><strong>God Of:</strong> ${god.godOf}</span>
+                                </p>
+                            <button class="btn btn-outline-danger" onclick="DOMManager.deleteGods('${pantheon.id}', '${god.id}')">Delete</button>
+                            <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#myModal" id="editBtn">Edit</button>
+                        </div>
+                    </div>`
                 );
             }
         }
     }
       
 }
+
+// `<p>
+// <span id="god-name-${god.id}"><strong>God Name:</strong> ${god.name}</span>
+// <span id="god-type-${god.id}"><strong>God Type:</strong> ${god.type}</span>
+// <span id="god-of-${god.id}"><strong>God Of:</strong> ${god.godOf}</span>
+// <button class="btn btn-danger" onclick="DOMManager.deleteGods('${pantheon.id}', '${god.id}')">Delete</button></p>
+// `
       
-$("#create-pantheon").click(() => {
-    DOMManager.createPantheon($("#pantheon-name").val());
-    $("pantheon-name").val("");
+      
+$('#create-pantheon').on('click', () => {
+    DOMManager.createPantheon($('#pantheon-name').val());
+    $('#pantheon-name').val('');
 });
-      
+
 DOMManager.getAllPantheon();
     

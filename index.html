@@ -8,17 +8,62 @@
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="container">
-    <div id="new-pantheon" class="jumbotron mt-4 p-5 rounded">
-        <h2 class="text-center">New Pantheon</h2>
-        <input type="text" id="pantheon-name" class="form-control"><br>
-        <button id="create-pantheon" class="btn btn-primary form-control">Create</button>
-    </div><br>
+<body>
+    <!--Start of jumbotron-->
+    <div class="jumbotron p-5 text-white rounded">
+        <h1>Welcome to the Realm of The Gods</h1>
+        <p>Mythology is not a lie, mythology is poetry, it is metaphorical. It has been well said that mythology is the penultimate truth--penultimate because the ultimate cannot be put into words. 
+            It is beyond words. Beyond images, beyond that bounding rim of the Buddhist Wheel of Becoming. Mythology pitches the mind beyond that rim, to what can be known but not told. 
+         </p><cite>~Joseph Campbell</cite>
+    </div>
+    <!--End of jumbotron-->
 
-    <div id="app">
-
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h1 class="modal-title fs-5" id="myModalLabel">Edit A Gods Card</h1>
+            </div>
+            <div class="modal-body">
+                <form action="url" method="put">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="god_name" placeholder="God Name">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="spouse" placeholder="Spouse">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="god_type" placeholder="God Type">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="god-of" placeholder="God Of">
+                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+        </div>
     </div>
 
+    <!--Start of container that will hold my inputs for CRUD operations-->
+    <div class="container">
+        <div id="new-pantheon">
+            <h2 class="text-center display-4">New Pantheon</h2>
+            <input type="text" id="pantheon-name" class="form-control"><br>
+            <button id="create-pantheon" class="btn btn-dark form-control">Create</button>
+        </div><br>
+
+        <div id="app">
+            <!--the newly created content from index.js will be stored here-->
+        </div>
+    </div>
+    <!--End of container that will hold my inputs for CRUD operations-->
+
+    <!--all my js scripts below here-->
     <script src="node_modules/jquery/dist/jquery.js"></script>
     <script src="index.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
