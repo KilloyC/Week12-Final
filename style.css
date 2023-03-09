@@ -54,7 +54,5 @@ body {
     background-color: aliceblue;
     width: 14rem;
     color: rgb(132, 127, 40);
-    /* display: flex;
-    flex-direction: row;
-    flex-wrap: wrap; */
+    display: inline-block;
 }

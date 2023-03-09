@@ -1,7 +1,7 @@
 /* TODO */
 //create a way for users to
     //edit entries with a modal after clicking the edit button-not sure how to make this work.
-//get the cards to display in a row and columns.
+
 
 class Pantheon {
     constructor(name) {
