@@ -34,33 +34,37 @@ class Pantheon {
 class Gods {
 
     //static methods are functions that belong to a class, rather than an instance of that class.
-    static idCounter = 0; //sets the value of the id of the gods array.
+     //sets the value of the id of the gods array.
 
-    constructor(name, spouse, type, godOf) {
+    constructor(name, spouse, type, godOf, id) {
         this.name = name;
         this.type = type;
         this.godOf = godOf;
         this.spouse = spouse;
-        this.id = Gods.idCounter++; //increments the id number starting from 0.
+        this.id = id; //increments the id number starting from 0.
     }
 }
       
-      
+/* Start of ApiRequestHandler Class */      
 class ApiRequestHandler {
     static url = "https://64051b18eed195a99f7c3b5c.mockapi.io/pantheons"; //url address for my mockAPI with pantheons set as the endpoint.
 
+    /* Start of getAllPantheon method */
     static getAllPantheon() {
-        return $.get(this.url); //ajak get request to retrieve, search, or view existing entries
-    }
-      
+        return $.get(this.url); //ajax get request to retrieve, search, or view existing entries
+    }/* end of getAllPantheon method */
+    
+    /* Start of getPantheon method */
     static getPantheon(id) {
         return $.get(`${this.url}/${id}`); //get the id for pantheons from the api's url.
-    }
+    } /* end of getPantheon method */
       
+    /* Start of createPantheon method */
     static createPantheon(pantheon) {
          return $.post(this.url, pantheon); //post request to add new entries to the api.
-    }
+    } /* end of createPantheon method */
       
+    /* Start of updatePantheon method */
     static updatePantheon(pantheon) {
         console.log(pantheon);
         return $.ajax({
@@ -70,57 +74,53 @@ class ApiRequestHandler {
             contentType: "application/json",
             type: "PUT" //put request to edit existing entries in the api.
         });
-    }
-
-    static updateNewPantheon(pantheon, newPantheonData) {
-        console.log("this is new Patheon", pantheon, newPantheonData);
-        return $.ajax({
-            url: `${this.url}/${pantheon.id}`,
-            dataType: "json",
-            data: JSON.stringify(newPantheonData), //turns data into a json string.
-            contentType: "application/json",
-            type: "PUT" //put request to edit existing entries in the api.
-        });
-    }
-      
+    } /* end of updatePantheon method */
+    
+    /* Start of deletePantheon method */ 
     static deletePantheon(id) {
         return $.ajax({
             url: `${this.url}/${id}`,
             type: "DELETE" //delete request to remove existing entries in the api.
         });
-    }
-}
-      
+    }/* end of deletePantheon method */
+
+} /* end of ApiRequestHandler Class */
+     
+/* Start of DOMManager Class */
 class DOMManager { //object to reference all pantheons in the class.
     static pantheons;
-      
+     
+    /* Start of getAllPantheon method */
     static getAllPantheon() { //method to call the getAllPanteon in the ApiRequestHandler class and render is to the DOM.
-        ApiRequestHandler.getAllPantheon().then(pantheons => this.render(pantheons));
-    }
-          
+        ApiRequestHandler.getAllPantheon().then(pantheons => {
+            this.render(pantheons)
+            //console.log(pantheons);
+        });
+    } /* Start of getAllPantheon method */
+    
+    /* Start of deletePantheon method */      
     static deletePantheon(id) { //static method to delete an existing pantheon using ApiRequestHandler class and properties.
         ApiRequestHandler.deletePantheon(id)
         .then(() => {
             return ApiRequestHandler.getAllPantheon(); //then response to promise that accesses method to return all pantheons/render all data to the API
         })
         .then((pantheons) => this.render(pantheons)); //then response to promise that returns the pantheons in this class and calls render method below
-    }
+    } /* end of deletePantheon method */
       
+    /* Start of createPantheon method */
     static createPantheon(name) {
         ApiRequestHandler.createPantheon(new Pantheon(name))
         .then(() => {
             return ApiRequestHandler.getAllPantheon();
         })
         .then((pantheons) => this.render(pantheons));
-    }
+    } /* Start of createPantheon method */
 
-        //get the id from reseting after reloading the page.
-        //need to be able to get card id to update/edit page.
-    //edit gods function
+    /* Start of editGods method */
     static editGods(editPanId, editGodId) {
-        console.log(editPanId, editGodId);
+        //console.log(editPanId, editGodId);
         let mySaveBtn = document.getElementById('saveBtn');
-        let mySaveData = [];
+        let mySaveData = {};
         //console.log(mySaveBtn);
 
         //mySave eventlistner - begin
@@ -131,35 +131,37 @@ class DOMManager { //object to reference all pantheons in the class.
           let godTypeInput = document.getElementById('god_type').value;
           let godOfInput = document.getElementById('god-of').value;
           //console.log(godNameInput, godSpouseInput, godTypeInput, godOfInput);
-          mySaveData.push({name: godNameInput, type: godTypeInput, spouse: godSpouseInput, godOf: godOfInput});
-          console.log(mySaveData);
-        
+          mySaveData = {name: godNameInput, type: godTypeInput, spouse: godSpouseInput, godOf: godOfInput, id: editGodId}; //need id to give the new content a value so it can be deleted later.
+          //console.log(mySaveData);
 
-        for(let pantheon of this.pantheons) {
-            //console.log('pantheon data:', pantheon);
-            if(pantheon.id == editPanId) {
-                //console.log("Pantheon id:", pantheon.id, "editPan Id:", editPanId);
-                for(let god of pantheon.gods) {
-                    //console.log('what god:', god);
-                    if(god.id == editGodId) {
-                       // console.log("god id:", god.id, "god Id:", editGodId);
-                        //console.log(god.id);
-                            ApiRequestHandler.updateNewPantheon(pantheon, mySaveData)
-                            .then(() => {
-                                return ApiRequestHandler.getAllPantheon();
-                            })
-                            .then((pantheons) => this.render(pantheons));
+            for(let pantheon of this.pantheons) {
+                //console.log('pantheon data:', pantheon);
+                if(pantheon.id == editPanId) {
+                    //console.log("Pantheon id:", pantheon.id, "editPan Id:", editPanId);
+                    for(let god of pantheon.gods) {
+                        //console.log('what god:', god);
+                        if(god.id == editGodId) {
+                            // console.log("god id:", god.id, "god Id:", editGodId);
+                            //console.log(god.id);
+                            //console.log("this is gods array:", pantheon.gods);
+                            pantheon.gods.splice(pantheon.gods.indexOf(god), 1, mySaveData); //splicing gods array and giving it a third value to override the selected element with mySaveData element.
+                            //console.log("updated array:", pantheon.gods);
+                                ApiRequestHandler.updatePantheon(pantheon)
+                                .then(() => {
+                                    return ApiRequestHandler.getAllPantheon();
+                                })
+                                .then((pantheons) => this.render(pantheons));
+                        }
                     }
                 }
             }
-        }
-    }) //mySave eventlistner - end
-
-        mySaveData = [];
-    }
+        })
+    }/* end of editGods method */
       
+    /* Start of addGods method */
     static addGods(id) {
         for (let pantheon of this.pantheons) {
+
             //console.log(pantheon);
             //console.log(this.pantheons);
         if (pantheon.id == id) {
@@ -167,7 +169,9 @@ class DOMManager { //object to reference all pantheons in the class.
             pantheon.gods.push(new Gods($(`#${pantheon.id}-god-name`).val(), //pushing new id and value to the gods array in the Pantheon class which is also updated in the api.
             $(`#${pantheon.id}-spouse`).val(), 
             $(`#${pantheon.id}-god-type`).val(), 
-            $(`#${pantheon.id}-god-of`).val()));
+            $(`#${pantheon.id}-god-of`).val(),
+            pantheon.gods.length)); //pusing the length of the gods array to give each god added an id that is dynmaic with the api.
+            //console.log(pantheon.gods.length);
             //console.log(pantheon.gods);
             ApiRequestHandler.updatePantheon(pantheon) //using the updatePantheon and put request to update the api with the new gods content.
             .then(() => {
@@ -176,8 +180,9 @@ class DOMManager { //object to reference all pantheons in the class.
             .then((pantheons) => this.render(pantheons));
             }
         }
-    }
+    } /* end of addGods method */
       
+    /* Start of deleteGods method */
     static deleteGods(pantheonId, godsId) { //deleting elements from the gods array and from the api.
         for (let pantheon of this.pantheons) {
             if (pantheon.id == pantheonId) {
@@ -194,13 +199,14 @@ class DOMManager { //object to reference all pantheons in the class.
                 }
             }
         }
-    }
+    } /* End of deleteGods method */
       
+    /* Start of render method */
     static render(pantheons) {
         this.pantheons = pantheons;
          $("#app").empty(); //accessing the div that stores the information below and clears it before re-rendering.
         for (let pantheon of pantheons) {
-            console.log('render:', pantheon);
+            //console.log('render:', pantheon);
             $("#app").prepend(
             html`<div id="${pantheon.id}" class="card">
                 <div class="card-header">
@@ -246,13 +252,14 @@ class DOMManager { //object to reference all pantheons in the class.
                 );
             }
         }
-    }
+    } /* end of render method */
       
-}
+} /* end of DOMManager Class */
       
+/* Start of jquery method to call the createPantheon method */
 $('#create-pantheon').on('click', () => { //adds a new pantheon after clicking on the create button.
     DOMManager.createPantheon($('#pantheon-name').val());
     $('#pantheon-name').val(''); //clears the input field after clicking on the create button.
-});
+}); /* end of jquery method to call the createPantheon method */
 
 DOMManager.getAllPantheon(); //calling the getAllPantheon function to run.
