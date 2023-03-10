@@ -59,7 +59,7 @@ class ApiRequestHandler {
       
     /* Start of updatePantheon method */
     static updatePantheon(pantheon) {
-        console.log(pantheon);
+        //console.log(pantheon);
         return $.ajax({
             url: `${this.url}/${pantheon.id}`,
             dataType: "json",
@@ -254,5 +254,15 @@ $('#create-pantheon').on('click', () => { //adds a new pantheon after clicking o
     DOMManager.createPantheon($('#pantheon-name').val());
     $('#pantheon-name').val(''); //clears the input field after clicking on the create button.
 }); /* end of jquery method to call the createPantheon method */
+
+/* start of method to clear modal input fields when closed */
+$(document).ready(function() {
+    $(".modal").on("hidden.bs.modal", function() {
+      $("#god_name").val('');
+      $("#spouse").val('');
+      $("#god_type").val('');
+      $("#god-of").val('');
+    });
+  }); /* end of method to clear modal input fields when closed */
 
 DOMManager.getAllPantheon(); //calling the getAllPantheon function to run.
