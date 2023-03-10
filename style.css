@@ -18,8 +18,15 @@ h1 {
 
 #new-pantheon {
     color: goldenrod;
-    margin-top: 0.5rem;
+    margin-top: 2rem;
     font-family: 'Macondo', cursive;
+}
+
+.accordion-button {
+    border-color: #724d02;
+    color: #080801;
+    font-size: 40px;
+    background-color: #f1d504;
 }
 
 body {

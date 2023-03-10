@@ -13,8 +13,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Macondo&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="./style.css">
     <!--End of links-->
 
 </head>
@@ -36,7 +36,7 @@
             <h1 class="modal-title fs-5" id="myModalLabel">Edit A Gods Card</h1>
             </div>
             <div class="modal-body">
-                <form action="url" method="put">
+                <form action="url" method="put" id="myForm">
                 <div class="form-group">
                     <input type="text" class="form-control" id="god_name" placeholder="God Name">
                 </div>
@@ -62,8 +62,18 @@
     <!--Start of container that will hold my inputs for CRUD operations-->
     <div class="container">
         <div id="new-pantheon">
-            <h2 class="text-center display-4">Create a new Pantheon</h2>
-            <input type="text" id="pantheon-name" class="form-control"><br>
+            <div class="accordion" id="dropDown">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button collapsed btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                      Create a new Patheon
+                    </button>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#dropDown">
+                  <input type="text" id="pantheon-name" class="form-control">
+                  </div>
+                </div>
+              </div>
             <button id="create-pantheon" class="btn btn-dark form-control">Create</button>
         </div><br>
 
@@ -74,8 +84,8 @@
     <!--End of container that will hold my inputs for CRUD operations-->
 
     <!--all my js scripts below here-->
-    <script src="node_modules/jquery/dist/jquery.js"></script>
-    <script src="index.js"></script>
-    <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <script src="./node_modules/jquery/dist/jquery.js"></script>
+    <script src="./index.js"></script>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 </body>
 </html>
