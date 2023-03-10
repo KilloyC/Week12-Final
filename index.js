@@ -13,12 +13,7 @@ let html = (strings, ...values) => {
   };
   //lit-html snippet - End
 
-
-/* TODO */
-//create a way for users to
-    //edit entries with a modal after clicking the edit button-not sure how to make this work.
-//console.log('welcome to the gods project');
-
+/* Start of Pantheon Class */
 class Pantheon {
     constructor(name) {
         this.name = name; //the name property for the pantheon object.
@@ -29,24 +24,22 @@ class Pantheon {
     addGods(name, spouse, type, godOf) { //method for adding the gods content to the array.
         this.gods.push(new Gods(name, spouse, type, godOf));
     }
-} 
+} /* end of Pantheon Class */
       
+/* Start of Gods Class */
 class Gods {
-
-    //static methods are functions that belong to a class, rather than an instance of that class.
-     //sets the value of the id of the gods array.
-
     constructor(name, spouse, type, godOf, id) {
         this.name = name;
         this.type = type;
         this.godOf = godOf;
         this.spouse = spouse;
-        this.id = id; //increments the id number starting from 0.
+        this.id = id; //used to give each instance of gods an id.
     }
-}
+} /* end of Gods Class */
       
 /* Start of ApiRequestHandler Class */      
 class ApiRequestHandler {
+    //static methods are functions that belong to a class, rather than an instance of that class.
     static url = "https://64051b18eed195a99f7c3b5c.mockapi.io/pantheons"; //url address for my mockAPI with pantheons set as the endpoint.
 
     /* Start of getAllPantheon method */
@@ -131,7 +124,7 @@ class DOMManager { //object to reference all pantheons in the class.
           let godTypeInput = document.getElementById('god_type').value;
           let godOfInput = document.getElementById('god-of').value;
           //console.log(godNameInput, godSpouseInput, godTypeInput, godOfInput);
-          mySaveData = {name: godNameInput, type: godTypeInput, spouse: godSpouseInput, godOf: godOfInput, id: editGodId}; //need id to give the new content a value so it can be deleted later.
+          mySaveData = {name: godNameInput, type: godTypeInput, spouse: godSpouseInput, godOf: godOfInput, id: editGodId}; //needs id object to give the new content a value so it can be deleted later.
           //console.log(mySaveData);
 
             for(let pantheon of this.pantheons) {
@@ -170,7 +163,7 @@ class DOMManager { //object to reference all pantheons in the class.
             $(`#${pantheon.id}-spouse`).val(), 
             $(`#${pantheon.id}-god-type`).val(), 
             $(`#${pantheon.id}-god-of`).val(),
-            pantheon.gods.length)); //pusing the length of the gods array to give each god added an id that is dynmaic with the api.
+            pantheon.gods.length)); //pushing the length of the gods array to give each god added an id that is dynmaic with the api.
             //console.log(pantheon.gods.length);
             //console.log(pantheon.gods);
             ApiRequestHandler.updatePantheon(pantheon) //using the updatePantheon and put request to update the api with the new gods content.
